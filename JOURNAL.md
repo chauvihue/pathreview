@@ -16,3 +16,34 @@ The current faithfulness checker used to test the RAG's feedback system for a us
 **Setup confirmation:** [✅] App runs locally at localhost:5173
 
 **Cohort ledger:** [✅] Issue added to cohort ledger
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction commit link:** [link to commit]() documenting the reproduced issue
+
+**Reproduction summary:**
+I utilized the code snipped provided in the Github Issues page. I observed the same output described in the page, with the exception of this string printed by `logger.info(...)` within the `FaithfulnessChecker.check()` method's definition:
+
+> 2026-07-28 18:45:05 [info     ] faithfulness_checked           claims_count=1 score=0.0 supported_count=0
+
+I played around with some other `context` and `feedback` inputs to see if the method still fails to produce the wanted result, and it sure did.
+
+Code:
+
+```python
+from rag.evaluator.faithfulness_checker import FaithfulnessChecker
+f = FaithfulnessChecker()
+print(f.check(feedback = "This kid only knows C++", context_chunks=[{"text": "C"}, {"text": "C++"}])
+```
+
+Output:
+
+> 2026-07-28 18:48:02 [info     ] faithfulness_checked           claims_count=1 score=0.0 supported_count=0
+> 0.0
+
+**PLAN.md link:** [link to PLAN.md](PLAN.md)
+
+<!-- **Walkthrough video (recommended):** [link to your Loom video, ≤2 min — recommended, not graded] -->
+
+<!-- **Blockers or open questions:**
+[Anything you're still uncertain about going into Week 9, or leave blank] -->
