@@ -47,3 +47,39 @@ Output:
 
 <!-- **Blockers or open questions:**
 [Anything you're still uncertain about going into Week 9, or leave blank] -->
+
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+Implemented the full fix in `rag/evaluator/faithfulness_checker.py`, covering steps 1–6 of PLAN.md:
+- Replaced the fixed `overlap >= 2` token count in `_is_supported()` with `_support_ratio()`, a proportion of meaningful overlapping tokens to the claim's own meaningful token count, so short claims can pass without lowering the bar for long ones.
+- Reworked tokenization to use a regex (`[a-z0-9']+(?:[+/#]+[a-z0-9']*)*`) instead of raw `.split()`, so trailing punctuation ("python,") no longer breaks overlap matching while multi-symbol terms ("C++", "CI/CD") stay intact.
+- Derived `SUPPORT_THRESHOLD = 0.35` by solving for a value that satisfies every existing test's inequality simultaneously.
+- Added `_scale_ratio()` so `check()` produces a graded per-claim score instead of a binary supported/unsupported count (fixes single-claim feedback being forced to exactly 0.0 or 1.0).
+- Fixed two edge-case bugs surfaced while testing: `chunk.get("text")` not handling explicit `None` values, and a divide-by-zero in `_support_ratio()` when a claim's tokens are all stop words.
+- Updated `tests/unit/test_faithfulness_checker.py` to match (type hints, cleanup of comments referencing the old fixed-count behavior); all 22 unit tests pass.
+
+**Next steps:**
+Run `make check` and `make test-unit` for a final self-review pass, double check `eval_suite.py` doesn't assume the old binary 0.0/1.0 output (flagged as an open risk in PLAN.md), then open the PR for #152.
+
+**Blockers:** N/A.
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:** [link to your submitted pull request]
+
+**Branch:** [the branch name you worked on, e.g. `fix/123-short-description`]
+
+**What you built:**
+[1–3 sentences summarizing what your fix does and how it works]
+
+**Tests added or updated:**
+[Which test files did you touch? What do they cover?]
+
+**Self-review confirmation:** [ ] make check passes  [ ] make test-unit passes
+
+**Draft PR feedback received from:** [name or Slack handle, or "none"]
