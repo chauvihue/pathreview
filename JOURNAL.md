@@ -70,16 +70,18 @@ Run `make check` and `make test-unit` for a final self-review pass, double check
 
 ### Check-in 2 (end of week)
 
-**PR link:** [link to your submitted pull request]
+**PR link:** [not yet opened — pending final self-review]
 
-**Branch:** [the branch name you worked on, e.g. `fix/123-short-description`]
+**Branch:** `fix/152-rag-faithfulness-short-claim`
 
 **What you built:**
-[1–3 sentences summarizing what your fix does and how it works]
+Replaced `_is_supported()`'s fixed `overlap >= 2` token count with `_support_ratio()`, a proportional overlap measure so short claims aren't unfairly penalized, and had `check()` score each claim on a continuous gradient (`_scale_ratio()`) instead of a binary supported/unsupported count, so single-claim feedback isn't forced to exactly 0.0 or 1.0. Along the way, fixed tokenization to strip trailing punctuation without breaking multi-symbol terms ("C++", "CI/CD"), derived `SUPPORT_THRESHOLD = 0.35` from the existing test suite's constraints, and fixed three related edge-case bugs: `None` and non-string `"text"` values in a context chunk, and a divide-by-zero when a claim's tokens are all stop words.
 
 **Tests added or updated:**
-[Which test files did you touch? What do they cover?]
+`tests/unit/test_faithfulness_checker.py` — updated the original 22 tests (type hints, removed comments describing the old fixed-count behavior) and added 19 new tests after a pressure-testing pass: direct coverage for `_scale_ratio()` and `_support_ratio()` (previously only exercised indirectly through `check()`), `_extract_claims()` boundary cases (10 vs. 11 character cutoff, no punctuation, empty string, the 10-claim cap), and type-mismatch handling (non-dict chunk items, non-string feedback, non-string `"text"` values). 41 tests total, all passing.
 
-**Self-review confirmation:** [ ] make check passes  [ ] make test-unit passes
+**Self-review confirmation:** [✅] make check passes  [✅] make test-unit passes
 
-**Draft PR feedback received from:** [name or Slack handle, or "none"]
+**Pre-existing failures (unrelated to #152):** `make check` fails on `main` with 182 ruff errors, all in files this branch never touches (e.g. `test_tech_detector.py`). Scoped `ruff`/`black`/`mypy` runs against just `faithfulness_checker.py` and `test_faithfulness_checker.py` pass clean. `make test-unit` fails on `main` with 53 failures across unrelated test files (`test_bias_detector.py`, `test_pii_scrubber.py`, `test_review_service.py`, etc.); this branch has 49 failures — same unrelated set, minus the 4 that used to fail in `test_faithfulness_checker.py` before this fix. Net: this branch introduces zero new failures and fixes 4 pre-existing ones.
+
+**Draft PR feedback received from:** N/A
