@@ -85,3 +85,36 @@ Replaced `_is_supported()`'s fixed `overlap >= 2` token count with `_support_rat
 **Pre-existing failures (unrelated to #152):** `make check` fails on `main` with 182 ruff errors, all in files this branch never touches (e.g. `test_tech_detector.py`). Scoped `ruff`/`black`/`mypy` runs against just `faithfulness_checker.py` and `test_faithfulness_checker.py` pass clean. `make test-unit` fails on `main` with 53 failures across unrelated test files (`test_bias_detector.py`, `test_pii_scrubber.py`, `test_review_service.py`, etc.); this branch has 49 failures — same unrelated set, minus the 4 that used to fail in `test_faithfulness_checker.py` before this fix. Net: this branch introduces zero new failures and fixes 4 pre-existing ones.
 
 **Draft PR feedback received from:** N/A - Feedback pending.
+
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [✅] Yes  [ ]
+
+**Summary of feedback:**
+Reviewers comment on the extensiveness of my changes, notably how I created other helper sub-methods. The most significant pushback was that my **PR was too complicated, and that I should open multiple PRs insteaad**. 
+
+**How you responded:**
+I agree with the feedback, and I'll work on splitting my changes into multiple PRs through rebasing commits.
+
+---
+
+### Reflection
+
+**What was harder than you expected?**
+Thinking outside of the box and coming up with a great, reasonable fix that initially looked like it bloated the system was something I needed time getting used to. Explaining the changes I made in a quick but complete recap was also harder than I initially thought, since writing summaries isn't my strong suit.
+
+**What did you learn about working in a large codebase?**
+Through this contribution, I learned to use AI, synergized using AI and verifying by manually reading code to familiarize myself with someone else's codebase. I've learned to strike a good balance between the 2 to achieve quality understanding without sacrificing too much time.
+I've also learned to implement and report fixes in a way that is contributive and productive to a group of engineers, not just my own. This includes report what I see in the codebase, list and defend my changes through bug reproduction, and detailing my steps. Communication of observations and fixing process is what differs the most from building my own project, and contributing to others' code.
+
+**How did AI tools help — and where did they fall short?**
+AI assistance was the most useful in generating long commit messages and PR descriptions. Using AI helped me report any changes I made comprehensively in a concise matter. After summary generation, I hardly need to verify the output since correct prompting should provide enough context for the AI. 
+A runner-up must be codebase navigation when I'm first seeing the codebase. Using AI speed things up tremendously, more so if you're unfamiliar with libraries and practices used in the codebase.
+
+**What would you do differently if you started over?**
+Opening multiple PRs, per my feedback from Course Progress. Instead of squishing every changes into a PR, I would've opened multiple PRs and wrote multiple summaries to further explain my many changes to the originial scoring function.
+
+**What are you most proud of from this module?**
+I learnt to open and fill in my first PR in another Github Repo! I learnt to communicate my thought process and changes via a PR. I'll definitely improve my Version Control skills through making more OSS!  
